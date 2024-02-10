@@ -1,7 +1,7 @@
 h2 {
     color: #239519;
     text-align: center;
-    margin-top: 70px
+    margin-top: 0;
 }
 
 button {
@@ -24,7 +24,12 @@ button:hover {
 }
 
 h3 {
-    color: rgb(42, 135, 42);
+    color: rgb(67, 42, 135);
+    font-size: 25px;
+}
+
+p {
+    font-size: 20px;
 }
 
 body {
@@ -46,4 +51,5 @@ body {
 .topInfo {
     margin-left: 40px;
     margin-right: 40px;
+    font-size: 20px;
 }
