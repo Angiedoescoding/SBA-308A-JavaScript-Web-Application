@@ -10,7 +10,7 @@ const url = `${apiUrl}?api_key=${apiKey}`;
 try {
     const response = await fetch(url);
     if (!response.ok) {
-    throw new Error('Failed to fetch park data');
+    throw new Error('Failed to fetch park data. Try again.');
     }
     const data = await response.json();
     return data;
@@ -21,7 +21,24 @@ try {
 }
 
 
+async function displayParksInDropdown() {
+    const parkSelect = document.getElementById('parkSelect');
+    const parkData = await fetchParkData();
+    
+    if (!parkData || !parkData.data) {
+        console.error('No park data available.');
+        return;
+    }
+    
+    parkData.data.forEach(park => {
+        const option = document.createElement('option');
+        option.value = park.parkCode;
+        option.textContent = park.fullName;
+        parkSelect.appendChild(option);
+    });
+}
 
+    window.addEventListener('DOMContentLoaded', displayParksInDropdown);
 
 
 
