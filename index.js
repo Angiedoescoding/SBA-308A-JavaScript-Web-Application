@@ -1,10 +1,14 @@
 // Event listener for button click
-document.getElementById('showInfoBtn').addEventListener('click', showParkInfo);
+document.getElementById('showInfoBtn').addEventListener('click', () => {
+    const parkCode = document.getElementById('selectedPark').value;
+    displayParksInDropdown(parkCode);
+});
 
 const apiKey = 'PufLRfqTHZMkQrBBrWpt3WMtshK13FSTP2n9yHpt';
 const apiUrl = 'https://developer.nps.gov/api/v1/parks';            // parks list
 
-async function fetchParkData() {
+
+async function fetchParkData() {                        // fetching all parks general data 
 const url = `${apiUrl}?api_key=${apiKey}`;
 
 try {
@@ -12,34 +16,59 @@ try {
     if (!response.ok) {
     throw new Error('Failed to fetch park data. Try again.');
     }
-    const data = await response.json();
-    return data;
+    const data = await response.json();             // waiting for the data to return to us
+    return data.data;
 } catch (error) {
     console.error('Error fetching park data:', error.message);
     return null;
-}
-}
-
-
-async function displayParksInDropdown() {
-    const parkSelect = document.getElementById('parkSelect');
-    const parkData = await fetchParkData();
-    
-    if (!parkData || !parkData.data) {
-        console.error('No park data available.');
-        return;
     }
-    
-    parkData.data.forEach(park => {
-        const option = document.createElement('option');
-        option.value = park.parkCode;
-        option.textContent = park.fullName;
-        parkSelect.appendChild(option);
-    });
 }
 
-    window.addEventListener('DOMContentLoaded', displayParksInDropdown);
 
+async function displayParksInDropdown(parkCode) {
+    const parkData = await fetchParkData();
+    const selectedPark = parkData.find(park => park.parkCode === parkCode);
+    
+    if (selectedPark) {
+        const parkImage = await fetchParkImage(parkCode);
+
+        const parkInfoDiv = document.getElementById('parkInfo');
+        parkInfoDiv.innerHTML = `
+        <h3>${selectedPark.fullName}</h3>
+        <p>${selectedPark.description}</p>
+        <p><strong>Location:</strong> ${selectedPark.states}</p>
+        <p><strong>Address:</strong> ${selectedPark.addresses[0].city}</p>
+        <p><strong>URL:</strong> <a href="${selectedPark.url}" target="_blank">${selectedPark.url}</a></p>
+        ${parkImage ? `<img src="${parkImage}" alt="${selectedPark.fullName} Image">` : ''}
+        `;
+        } else {
+            console.error('Selected park data not found.')
+        }
+}
+
+window.addEventListener('DOMContentLoaded', async () => {
+const selectedPark = document.getElementById('selectedPark');
+const parkData = await fetchParkData();
+
+if (!parkData) {
+    console.error('No park data available');
+    return;
+}
+
+parkData.forEach(park => {
+    const option = document.createElement('option');
+    option.value = park.parkCode;
+    option.textContent = park.fullName;
+    selectedPark.appendChild(option); 
+    });
+});
+
+
+
+//*** Reflection on the issues: */
+
+// 1. Not all parks are loaded in the drop-down list - possible this is because the API returns paginated results (?), and by default, it only returns the first page of results? fetchParkData
+// 2. The image API works, but the image itseld isn't loading.
 
 
 
