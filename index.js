@@ -14,7 +14,7 @@ async function fetchParkData() {                        // fetching all parks ge
     let totalPages = 1;
 
     while (page <= totalPages) {
-        const url = `${apiUrl}?api_key=${apiKey}&limit=50&page=${page}`;
+        const url = `${apiUrl}?api_key=${apiKey}&limit=500&page=${page}`;    // increased the limit to 500 and now a full list is shown
 
 try {
     const response = await fetch(url);
@@ -31,7 +31,7 @@ try {
     return null;
     }
 }
-return parks;                      
+return parks;                       
 }
 
 async function fetchParkImage(parkCode) {                      // fetching parks picture
