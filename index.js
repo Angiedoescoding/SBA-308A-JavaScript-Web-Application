@@ -9,19 +9,29 @@ const apiUrl = 'https://developer.nps.gov/api/v1/parks';            // parks lis
 
 
 async function fetchParkData() {                        // fetching all parks general data 
-const url = `${apiUrl}?api_key=${apiKey}`;
+    const parks = [];
+    let page = 1;                   // pagination so all parks are shown in teh list
+    let totalPages = 1;
+
+    while (page <= totalPages) {
+        const url = `${apiUrl}?api_key=${apiKey}&limit=50&page=${page}`;
 
 try {
     const response = await fetch(url);
     if (!response.ok) {
     throw new Error('Failed to fetch park data. Try again.');
     }
+
     const data = await response.json();             // waiting for the data to return to us
-    return data.data;
+    parks.push(...data.data);
+    totalPages = data.totalPages;
+    page++;
 } catch (error) {
     console.error('Error fetching park data:', error.message);
     return null;
     }
+}
+return parks;                      
 }
 
 async function fetchParkImage(parkCode) {                      // fetching parks picture
@@ -78,6 +88,10 @@ parkData.forEach(park => {
     selectedPark.appendChild(option); 
     });
 });
+
+
+
+
 
 
 
