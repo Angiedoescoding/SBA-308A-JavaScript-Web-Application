@@ -34,8 +34,7 @@ parkData.forEach(park => {
 
 //*** Reflection on the issues: */
 
-// 1. Not all parks are loaded in the drop-down list - possible this is because the API returns paginated results (?), and by default, it only returns the first page of results? fetchParkData
-// 2. The image API works, but the image itseld isn't loading.
+// 1. The image API works, but the image itseld isn't loading.
 
 
 // Each API request contains:
