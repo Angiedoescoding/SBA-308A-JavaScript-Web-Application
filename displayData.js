@@ -1,5 +1,5 @@
 import { fetchParkData } from './fetchParks.js';
-import { fetchParkImage } from './fetchImages,js';
+import { fetchParkImage } from './fetchImages.js';
 
 export async function displayParksInDropdown(parkCode) {
     const parkData = await fetchParkData();

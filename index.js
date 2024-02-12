@@ -1,4 +1,13 @@
-import { fetchParkData } from "./fetchParks.js"; 
+import { fetchParkData } from './fetchParks.js';
+import { displayParksInDropdown } from './displayData.js'; 
+
+
+// Event listener for button click
+document.getElementById('showInfoBtn').addEventListener('click', () => {
+    const parkCode = document.getElementById('selectedPark').value;
+    //const parkData = await fetchParkData();
+    displayParksInDropdown(parkCode);
+});
 
 window.addEventListener('DOMContentLoaded', async () => {
     const selectedPark = document.getElementById('selectedPark');
@@ -18,11 +27,7 @@ parkData.forEach(park => {
 });
 
 
-// Event listener for button click
-document.getElementById('showInfoBtn').addEventListener('click', () => {
-    const parkCode = document.getElementById('selectedPark').value;
-    displayParksInDropdown(parkCode);
-});
+
 
 
 
@@ -31,7 +36,6 @@ document.getElementById('showInfoBtn').addEventListener('click', () => {
 
 // 1. Not all parks are loaded in the drop-down list - possible this is because the API returns paginated results (?), and by default, it only returns the first page of results? fetchParkData
 // 2. The image API works, but the image itseld isn't loading.
-// 3. After applying the modules, the console shows: "Uncaught ReferenceError: displayParksInDropdown is not defined at HTMLButtonElement.<anonymous>"
 
 
 // Each API request contains:
